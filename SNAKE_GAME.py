@@ -1,3 +1,5 @@
+#스네이크 게임
+
 import pygame
 import time
 import random
