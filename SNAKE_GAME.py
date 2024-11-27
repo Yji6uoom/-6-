@@ -116,6 +116,9 @@ def main_menu():
 def game_loop():
     global snake_position, snake_body, food_position, food_spawn, direction, change_to, score
     
+    # 일시정지 상태
+    pause = False
+
     # 초기화
     snake_position = [100, 50]
     snake_body = [[100, 50], [90, 50], [80, 50], [70, 50]]
@@ -132,14 +135,36 @@ def game_loop():
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP and direction != 'DOWN':
-                    change_to = 'UP'
-                elif event.key == pygame.K_DOWN and direction != 'UP':
-                    change_to = 'DOWN'
-                elif event.key == pygame.K_LEFT and direction != 'RIGHT':
-                    change_to = 'LEFT'
-                elif event.key == pygame.K_RIGHT and direction != 'LEFT':
-                    change_to = 'RIGHT'
+                # P키로 일시정지 및 계속하기
+                if event.key == pygame.K_p:
+                    pause = not pause
+                if not pause:
+                    if event.key == pygame.K_UP and direction != 'DOWN':
+                        change_to = 'UP'
+                    elif event.key == pygame.K_DOWN and direction != 'UP':
+                        change_to = 'DOWN'
+                    elif event.key == pygame.K_LEFT and direction != 'RIGHT':
+                        change_to = 'LEFT'
+                    elif event.key == pygame.K_RIGHT and direction != 'LEFT':
+                        change_to = 'RIGHT'
+
+        # 일시정지 상태일 경우 일시정지화면, 점수표시와 나머지 게임 로직을 건너뛰고 계속
+        if pause:
+            game_window.fill(black)  # 배경 색상
+            pause_font = pygame.font.Font(font_path, 50)
+            pause_surface = pause_font.render('일시정지', True, white)
+            pause_rect = pause_surface.get_rect()
+            pause_rect.midtop = (window_x / 2, window_y / 4)
+            game_window.blit(pause_surface, pause_rect)
+
+            resume_surface = game_font.render('계속하려면 P키를 누르세요', True, white)
+            resume_rect = resume_surface.get_rect()
+            resume_rect.midtop = (window_x / 2, window_y / 2)
+            game_window.blit(resume_surface, resume_rect)
+
+            show_score(1, white, game_font, font_size)
+            pygame.display.update()
+            continue
 
         if change_to == 'UP' and direction != 'DOWN':
             direction = 'UP'
