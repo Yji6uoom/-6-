@@ -150,6 +150,18 @@ def game_loop():
 
         # 일시정지 상태일 경우 점수표시와 나머지 게임 로직을 건너뛰고 계속
         if pause:
+            game_window.fill(black)  # 배경 색상
+            pause_font = pygame.font.Font(font_path, 50)
+            pause_surface = pause_font.render('일시정지', True, white)
+            pause_rect = pause_surface.get_rect()
+            pause_rect.midtop = (window_x / 2, window_y / 4)
+            game_window.blit(pause_surface, pause_rect)
+
+            resume_surface = game_font.render('계속하려면 P키를 누르세요', True, white)
+            resume_rect = resume_surface.get_rect()
+            resume_rect.midtop = (window_x / 2, window_y / 2)
+            game_window.blit(resume_surface, resume_rect)
+            
             show_score(1, white, game_font, font_size)
             pygame.display.update()
             continue
