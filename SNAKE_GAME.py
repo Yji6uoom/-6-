@@ -148,7 +148,7 @@ def game_loop():
                     elif event.key == pygame.K_RIGHT and direction != 'LEFT':
                         change_to = 'RIGHT'
 
-        # 일시정지 상태일 경우 점수표시와 나머지 게임 로직을 건너뛰고 계속
+        # 일시정지 상태일 경우 일시정지화면, 점수표시와 나머지 게임 로직을 건너뛰고 계속
         if pause:
             game_window.fill(black)  # 배경 색상
             pause_font = pygame.font.Font(font_path, 50)
@@ -161,7 +161,7 @@ def game_loop():
             resume_rect = resume_surface.get_rect()
             resume_rect.midtop = (window_x / 2, window_y / 2)
             game_window.blit(resume_surface, resume_rect)
-            
+
             show_score(1, white, game_font, font_size)
             pygame.display.update()
             continue
